@@ -1,40 +1,8 @@
-import { useEffect, useState } from 'react';
-import api from '../../services/api';
+import { useTransactions } from '../../hooks/useTransactions';
 import { Container } from './styles';
 
-interface ITransaction {
-  id: number;
-  title: string;
-  amount: number;
-  type: string;
-  category: string;
-  createdAt: string;
-  parsedValue?: string;
-  parsedDate?: string;
-}
-
 export function TransactionsTable() {
-  const [transactions, setTransactions] = useState<ITransaction[]>([]);
-
-  useEffect(() => {
-    async function loadTransactions() {
-      const { data } = await api.get<{ transactions: ITransaction[] }>('/transactions')
-
-      const parsedTransactions = data.transactions.map(transaction => ({
-        ...transaction,
-        parsedValue: new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(transaction.amount),
-        parsedDate: new Intl.DateTimeFormat('pt-BR')
-          .format(new Date(transaction.createdAt))
-      }))
-
-      setTransactions(parsedTransactions)
-    }
-
-    loadTransactions();
-  }, [])
+  const { transactions } = useTransactions();
 
   return (
     <Container>

@@ -33,7 +33,7 @@ createServer({
           title: 'Aluguel',
           type: 'withdraw',
           category: 'Moradia',
-          amount: -2000,
+          amount: 2000,
           createdAt: new Date('2021-03-05 21:04')
         },
         {
@@ -41,7 +41,7 @@ createServer({
           title: 'Supermercado',
           type: 'withdraw',
           category: 'Alimentação',
-          amount: -600,
+          amount: 600,
           createdAt: new Date('2021-03-12 21:04')
         },
         {
@@ -66,7 +66,7 @@ createServer({
     this.post('/transactions', (schema, request) => {
       const data = JSON.parse(request.requestBody);
 
-      return schema.create('transaction', data);
+      return schema.create('transaction', { ...data, createdAt: new Date() });
     });
   }
 })
